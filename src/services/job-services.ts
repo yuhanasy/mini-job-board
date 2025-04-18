@@ -13,13 +13,13 @@ export async function fetchJobList(filter?: {
     .from("jobs")
     .select(
       `
-    id,
-    title,
-    company_name,
-    location,
-    created_at,
-    job_types (name)
-  `
+        id,
+        title,
+        company_name,
+        location,
+        created_at,
+        job_types (name)
+      `
     )
     .order("created_at", { ascending: false });
 
@@ -58,4 +58,29 @@ export async function fetchJobLocationList() {
   const { data } = await supabase.from("locations").select("location");
 
   return data;
+}
+
+export async function fetchJobById({ id }: { id: string }) {
+  const supabase = await createClient();
+
+  const { data } = await supabase
+    .from("jobs")
+    .select(
+      `
+        id,
+        title,
+        company_name,
+        location,
+        description,
+        created_at,
+        job_types (name)
+      `
+    )
+    .eq("id", id)
+    .limit(1)
+    .single();
+
+  if (!data) return;
+
+  return { ...data, job_types_name: data.job_types.name };
 }
