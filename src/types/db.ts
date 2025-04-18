@@ -73,7 +73,12 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      locations: {
+        Row: {
+          location: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
