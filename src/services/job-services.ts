@@ -4,10 +4,12 @@ import { createClient } from "@/utils/supabase/server";
 export async function fetchJobList(filter?: {
   location?: string[];
   job_type?: string[];
+  own_jobs?: boolean;
 }): Promise<JobListItem[] | undefined> {
   const supabase = await createClient();
+  const { data: user } = await supabase.auth.getUser();
 
-  const { location, job_type } = filter || {};
+  const { location, job_type, own_jobs } = filter || {};
 
   let query = supabase
     .from("jobs")
@@ -22,6 +24,10 @@ export async function fetchJobList(filter?: {
       `
     )
     .order("created_at", { ascending: false });
+
+  if (own_jobs && user.user) {
+    query = query.eq("user_id", user.user.id);
+  }
 
   if (location?.length) {
     query = query.in("location", location);

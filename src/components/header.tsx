@@ -2,8 +2,6 @@ import Link from "next/link";
 import PostJobDialog from "./post-job-dialog";
 import { fetchUser } from "@/services/auth-services";
 import { Button } from "./ui/button";
-import { signOutAction } from "@/server/auth-actions";
-import { SubmitButton } from "./submit-button";
 
 const Header = async () => {
   const { user } = await fetchUser();
@@ -19,17 +17,8 @@ const Header = async () => {
       {user ? (
         <div className="flex items-center gap-4">
           <span className="text-sm">Hey, {user.email}!</span>
-          <form>
-            <SubmitButton
-              variant="outline"
-              formAction={signOutAction}
-              pendingText="Signing out..."
-            >
-              Sign out
-            </SubmitButton>
-          </form>
           <Button asChild>
-            <Link href="/dashboard">Post a job</Link>
+            <Link href="/dashboard/jobs/create">Post a job</Link>
           </Button>
         </div>
       ) : (
