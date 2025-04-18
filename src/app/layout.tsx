@@ -30,7 +30,7 @@ export default function RootLayout({
       >
         <div className="min-h-screen flex flex-col items-center">
           <Header />
-          <main className="flex flex-col gap-20 w-full max-w-2xl p-5">
+          <main className="flex flex-col gap-20 w-full max-w-5xl p-5">
             {children}
           </main>
         </div>

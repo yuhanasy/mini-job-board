@@ -25,7 +25,7 @@ export default async function Home({
   if (!jobs || !jobTypes || !locations) return;
 
   return (
-    <div>
+    <div className="mx-auto w-full max-w-2xl">
       <h1 className="text-3xl mb-8">
         Your Next Opportunity is Just a Click Away
         <br />
