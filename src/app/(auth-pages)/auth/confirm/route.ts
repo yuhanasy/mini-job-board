@@ -9,5 +9,5 @@ export const GET = async (request: Request) => {
     return NextResponse.redirect(`${origin}${redirectTo}`);
   }
 
-  return NextResponse.redirect(`${origin}/`);
+  return NextResponse.redirect(`${origin}/dashboard`);
 };
