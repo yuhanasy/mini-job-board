@@ -1,10 +1,14 @@
 import Link from "next/link";
 import PostJobDialog from "./post-job-dialog";
 import { fetchUser } from "@/services/auth-services";
-import { Button } from "./ui/button";
+import { headers } from "next/headers";
+import HeaderActions from "./header-actions";
 
 const Header = async () => {
   const { user } = await fetchUser();
+  const header = (await headers()).get("origin");
+
+  console.log(header);
 
   return (
     <div className="w-full flex justify-between max-w-5xl px-5 py-4">
@@ -14,16 +18,7 @@ const Header = async () => {
         </div>
       </Link>
 
-      {user ? (
-        <div className="flex items-center gap-4">
-          <span className="text-sm">Hey, {user.email}!</span>
-          <Button asChild>
-            <Link href="/dashboard/jobs/create">Post a job</Link>
-          </Button>
-        </div>
-      ) : (
-        <PostJobDialog />
-      )}
+      {user ? <HeaderActions email={user.email} /> : <PostJobDialog />}
     </div>
   );
 };
