@@ -109,3 +109,26 @@ export async function postJob(user_id: string, data: JobInputType) {
     error: sb.error,
   };
 }
+
+export async function deleteJob(user_id: string, job_id: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("jobs")
+    .delete()
+    .eq("id", job_id)
+    .eq("user_id", user_id);
+
+  if (error) {
+    console.log({ error });
+    return {
+      success: false,
+      message: "Failed when deleting job",
+    };
+  }
+
+  return {
+    success: true,
+    message: "Successfully deleting job",
+  };
+}

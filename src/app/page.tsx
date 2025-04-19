@@ -33,7 +33,7 @@ export default async function Home({
       </h1>
 
       <JobFilter locations={locations} jobTypes={jobTypes} />
-      <JobList jobs={jobs} />
+      <JobList jobs={jobs} to={(id) => `/jobs/${id}`} />
     </div>
   );
 }

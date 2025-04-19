@@ -4,15 +4,16 @@ import Link from "next/link";
 
 type Props = {
   jobs: JobListItem[];
+  to: (id: string) => string;
 };
 
-const JobList = ({ jobs }: Props) => {
+const JobList = ({ jobs, to }: Props) => {
   return (
     <div className="relative">
       <h2 className="text-xl font-medium mb-3">Latest Jobs</h2>
       <div className="flex flex-col gap-2">
         {jobs?.map((job) => (
-          <Link key={job.id} href={`/jobs/${job.id}`}>
+          <Link key={job.id} href={to(job.id)}>
             <div className="w-full bg-neutral-100 hover:bg-neutral-200 transition-colors ease-in px-6 py-4 rounded-3xl cursor-pointer">
               <div className="flex justify-between">
                 <div>

@@ -8,7 +8,7 @@ const Jobs = async () => {
 
   return (
     <div>
-      <JobList jobs={jobs} />
+      <JobList jobs={jobs} to={(id) => `/dashboard/jobs/${id}`} />
     </div>
   );
 };

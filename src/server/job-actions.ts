@@ -2,7 +2,7 @@
 
 import { jobSchema } from "@/entity/job";
 import { fetchUser } from "@/services/auth-services";
-import { postJob } from "@/services/job-services";
+import { deleteJob, postJob } from "@/services/job-services";
 import { redirect } from "next/navigation";
 
 type CreateJobActionState = {
@@ -43,4 +43,23 @@ export const createJobAction = async (
   }
 
   redirect(`/dashboard/jobs/${data.id}`);
+};
+
+export const deleteJobAction = async (id: string) => {
+  console.log({ id });
+  if (!id) return;
+
+  const { user } = await fetchUser();
+  if (!user) {
+    redirect("/");
+  }
+
+  const { success, message } = await deleteJob(user.id, id);
+
+  console.log(message);
+  if (!success) {
+    return;
+  }
+
+  redirect("/dashboard/jobs");
 };
