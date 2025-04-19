@@ -4,8 +4,10 @@ import MDEditor, { commands } from "@uiw/react-md-editor";
 import { useState } from "react";
 import rehypeSanitize from "rehype-sanitize";
 
-const TextEditor = () => {
-  const [value, setValue] = useState("");
+const TextEditor = ({ defaultValue }: { defaultValue?: string }) => {
+  console.log({ defaultValue });
+  const [value, setValue] = useState(() => defaultValue || "");
+  console.log({ value });
 
   const handleChange = (value?: string) => {
     setValue(value || "");

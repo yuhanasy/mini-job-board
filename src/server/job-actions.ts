@@ -2,10 +2,10 @@
 
 import { jobSchema } from "@/entity/job";
 import { fetchUser } from "@/services/auth-services";
-import { deleteJob, postJob } from "@/services/job-services";
+import { deleteJob, createJob, editJob } from "@/services/job-services";
 import { redirect } from "next/navigation";
 
-type CreateJobActionState = {
+export type CreateJobActionState = {
   message?: string;
   errors?: Record<string, string[] | undefined>;
 };
@@ -19,12 +19,12 @@ export const createJobAction = async (
     company_name: formData.get("company_name"),
     job_type_id: formData.get("job_type_id"),
     location: formData.get("location"),
-    description: formData.get("descriptionxxx"),
+    description: formData.get("description"),
   });
 
   if (!validatedFields.success) {
     return {
-      message: "Please check again the input",
+      message: "Please check the input again",
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
@@ -34,7 +34,50 @@ export const createJobAction = async (
     redirect("/");
   }
 
-  const { data, error } = await postJob(user.id, validatedFields.data);
+  const { data, error } = await createJob(user.id, validatedFields.data);
+  console.log(error);
+  if (error || !data) {
+    return {
+      message: "Failed to save job",
+    };
+  }
+
+  redirect(`/dashboard/jobs/${data.id}`);
+};
+
+export const editJobAction = async (
+  prevState: CreateJobActionState,
+  formData: FormData
+): Promise<CreateJobActionState> => {
+  const validatedFields = jobSchema.safeParse({
+    id: formData.get("id"),
+    title: formData.get("title"),
+    company_name: formData.get("company_name"),
+    job_type_id: formData.get("job_type_id"),
+    location: formData.get("location"),
+    description: formData.get("description"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      message: "Please check the input again",
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const { id, ...restData } = validatedFields.data;
+  if (!id) {
+    return {
+      message: "No job id has been found",
+    };
+  }
+
+  const { user } = await fetchUser();
+  if (!user) {
+    redirect("/");
+  }
+
+  const { data, error } = await editJob(user.id, id, restData);
   console.log(error);
   if (error || !data) {
     return {
@@ -46,7 +89,6 @@ export const createJobAction = async (
 };
 
 export const deleteJobAction = async (id: string) => {
-  console.log({ id });
   if (!id) return;
 
   const { user } = await fetchUser();

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const jobSchema = z.object({
+  id: z.string().optional(),
   title: z.string({ required_error: "Title is required" }),
   company_name: z.string({ required_error: "Company name is required" }),
   job_type_id: z.string({ required_error: "Job type is required" }),

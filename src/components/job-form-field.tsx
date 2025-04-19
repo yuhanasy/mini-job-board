@@ -11,8 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createJobAction } from "@/server/job-actions";
+import { createJobAction, CreateJobActionState } from "@/server/job-actions";
 import { useActionState } from "react";
+import { JobInputType } from "@/entity/job";
+import Link from "next/link";
 
 type Props = {
   locations:
@@ -26,16 +28,24 @@ type Props = {
         name: string;
       }[]
     | null;
+  defaultValue?: JobInputType;
+  action: (
+    prevState: CreateJobActionState,
+    formData: FormData
+  ) => Promise<CreateJobActionState>;
 };
 
-const JobFormField = ({ locations, jobTypes }: Props) => {
+const JobFormField = ({ defaultValue, locations, jobTypes, action }: Props) => {
   const [state, formAction, pending] = useActionState(createJobAction, {});
 
-  console.log({ state });
-  console.log({ pending });
-
+  console.log(state);
+  console.log(pending);
   return (
     <form action={formAction} className="flex flex-col gap-4">
+      {defaultValue?.id ? (
+        <input name="id" defaultValue={defaultValue.id} hidden />
+      ) : null}
+
       <div className="bg-neutral-100 p-4 rounded-2xl">
         <h2>Job details</h2>
 
@@ -46,6 +56,7 @@ const JobFormField = ({ locations, jobTypes }: Props) => {
               id="title"
               name="title"
               placeholder="What's the job?"
+              defaultValue={defaultValue?.title}
               disabled={pending}
               required
               className="bg-white"
@@ -57,6 +68,7 @@ const JobFormField = ({ locations, jobTypes }: Props) => {
               id="company_name"
               name="company_name"
               placeholder="What's your company called?"
+              defaultValue={defaultValue?.company_name}
               disabled={pending}
               required
               className="bg-white"
@@ -64,7 +76,11 @@ const JobFormField = ({ locations, jobTypes }: Props) => {
           </div>
           <div>
             <label htmlFor="job_type_id">Type</label>
-            <Select name="job_type_id" disabled={pending}>
+            <Select
+              name="job_type_id"
+              disabled={pending}
+              defaultValue={defaultValue?.job_type_id}
+            >
               <SelectTrigger id="job_type_id" className="w-full bg-white">
                 <SelectValue placeholder="Select the job's type" />
               </SelectTrigger>
@@ -79,7 +95,11 @@ const JobFormField = ({ locations, jobTypes }: Props) => {
           </div>
           <div>
             <label htmlFor="location">Location</label>
-            <Select name="location" disabled={pending}>
+            <Select
+              name="location"
+              disabled={pending}
+              defaultValue={defaultValue?.location}
+            >
               <SelectTrigger id="location" className="w-full bg-white">
                 <SelectValue placeholder="Where candidate should work from?" />
               </SelectTrigger>
@@ -101,13 +121,15 @@ const JobFormField = ({ locations, jobTypes }: Props) => {
       <div className="bg-neutral-100 p-4 rounded-2xl">
         <h2>Job Description</h2>
         <div className="mt-4">
-          <TextEditor />
+          <TextEditor defaultValue={defaultValue?.description} />
         </div>
       </div>
 
       <div className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <SubmitButton>Save</SubmitButton>
+        <Button asChild variant="outline" disabled={pending}>
+          <Link href="/dashboard/jobs">Cancel</Link>
+        </Button>
+        <SubmitButton disabled={pending}>Save</SubmitButton>
       </div>
     </form>
   );

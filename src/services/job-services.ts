@@ -79,6 +79,7 @@ export async function fetchJobById({ id }: { id: string }) {
         company_name,
         location,
         description,
+        job_type_id,
         created_at,
         job_types (name)
       `
@@ -92,10 +93,10 @@ export async function fetchJobById({ id }: { id: string }) {
   return { ...data, job_types_name: data.job_types.name };
 }
 
-export async function postJob(user_id: string, data: JobInputType) {
+export async function createJob(user_id: string, data: JobInputType) {
   const supabase = await createClient();
 
-  const sb = await supabase
+  const res = await supabase
     .from("jobs")
     .insert({
       user_id,
@@ -105,8 +106,31 @@ export async function postJob(user_id: string, data: JobInputType) {
     .single();
 
   return {
-    data: sb.data,
-    error: sb.error,
+    data: res.data,
+    error: res.error,
+  };
+}
+
+export async function editJob(
+  user_id: string,
+  job_id: string,
+  data: JobInputType
+) {
+  const supabase = await createClient();
+
+  const res = await supabase
+    .from("jobs")
+    .update({
+      user_id,
+      ...data,
+    })
+    .eq("id", job_id)
+    .select()
+    .single();
+
+  return {
+    data: res.data,
+    error: res.error,
   };
 }
 
