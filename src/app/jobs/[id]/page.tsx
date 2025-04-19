@@ -1,6 +1,7 @@
 import { fetchJobById } from "@/services/job-services";
 import { relativeTime } from "@/utils/utils";
 import { File, MapIcon, Timer } from "lucide-react";
+import Markdown from "react-markdown";
 
 export default async function Home({
   params,
@@ -13,8 +14,8 @@ export default async function Home({
   if (!job) return;
 
   return (
-    <div className="w-full rounded-2xl shadow p-8 flex flex-wrap gap-x-12 gap-y-8">
-      <div className="bg-neutral-100 rounded-xl p-4 -m-4 min-w-xs">
+    <div className="w-full rounded-3xl shadow p-12 flex flex-col gap-y-12">
+      <div className="bg-neutral-100 rounded-xl p-4 -m-4 w-full max-w-xs select-none">
         <div className="mb-4">
           <h5 className="text-lg text-muted-foreground">{job.company_name}</h5>
           <h1 className="text-2xl font-medium">{job.title}</h1>
@@ -36,8 +37,10 @@ export default async function Home({
       </div>
 
       <div>
-        <h3 className="text-xl font-medium">Job Description</h3>
-        {job.description}
+        <h3 className="text-md font-semibold mb-4">Job Description</h3>
+        <div className="prose-sm prose-li:list-disc">
+          <Markdown>{job.description}</Markdown>
+        </div>
       </div>
     </div>
   );

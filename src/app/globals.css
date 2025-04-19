@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@plugin "@tailwindcss/typography";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -118,5 +120,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  ::selection {
+    @apply bg-neutral-400;
   }
 }
