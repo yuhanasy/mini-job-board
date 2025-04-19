@@ -3,6 +3,7 @@ import PostJobDialog from "./post-job-dialog";
 import { fetchUser } from "@/services/auth-services";
 import { headers } from "next/headers";
 import HeaderActions from "./header-actions";
+import { OrigamiIcon } from "lucide-react";
 
 const Header = async () => {
   const { user } = await fetchUser();
@@ -13,7 +14,8 @@ const Header = async () => {
   return (
     <div className="w-full flex justify-between max-w-5xl px-5 py-4">
       <Link href="/">
-        <div className="text-2xl font-bold hover:opacity-75">
+        <div className="text-2xl font-bold hover:opacity-75 flex items-center gap-2">
+          <OrigamiIcon strokeWidth="2" />
           Mini Job Board
         </div>
       </Link>

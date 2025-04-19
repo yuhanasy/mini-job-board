@@ -1,6 +1,13 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Dialog, DialogTrigger, DialogContent, DialogClose } from "./ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+  DialogDescription,
+  DialogTitle,
+} from "./ui/dialog";
 
 const PostJobDialog = () => {
   return (
@@ -10,12 +17,12 @@ const PostJobDialog = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] rounded-3xl">
         <div className="mb-4">
-          <h5 className="text-2xl font-medium text-center">
+          <DialogTitle className="text-2xl font-medium text-center">
             Hire your dream team
-          </h5>
-          <p className="text-muted-foreground text-center">
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground text-center">
             Sign in to post a job
-          </p>
+          </DialogDescription>
         </div>
 
         <DialogClose asChild>
