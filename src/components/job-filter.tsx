@@ -16,8 +16,8 @@ type Props = {
 
 const JobFilter = ({ locations, jobTypes }: Props) => {
   return (
-    <div className="mb-8 flex gap-12">
-      <div>
+    <div className="relative mb-8 flex gap-12 h-40 hover:h-56 transition-all ease-in-out">
+      <div className="relative max-h-56 overflow-y-scroll">
         <h4 className="font-medium mb-1">Locations</h4>
         <ul className="flex flex-col gap-1">
           {locations?.map(
@@ -35,7 +35,7 @@ const JobFilter = ({ locations, jobTypes }: Props) => {
           )}
         </ul>
       </div>
-      <div>
+      <div className="relative max-h-40 overflow-y-scroll">
         <h4 className="font-medium mb-1">Type</h4>
         <ul className="flex flex-col gap-1">
           {jobTypes?.map((type) => (

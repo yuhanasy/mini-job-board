@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { signInUser, signoutUser, signUpUser } from "@/services/auth-services";
 import { encodedRedirect } from "@/utils/utils";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -8,7 +8,6 @@ import { redirect } from "next/navigation";
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
-  const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
   if (!email || !password) {
@@ -19,12 +18,10 @@ export const signUpAction = async (formData: FormData) => {
     );
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { error } = await signUpUser({
     email,
     password,
-    options: {
-      emailRedirectTo: `${origin}/auth/confirm`,
-    },
+    emailRedirectTo: `${origin}/auth/confirm`,
   });
 
   if (error) {
@@ -42,9 +39,8 @@ export const signUpAction = async (formData: FormData) => {
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { error } = await signInUser({
     email,
     password,
   });
@@ -57,7 +53,10 @@ export const signInAction = async (formData: FormData) => {
 };
 
 export const signOutAction = async () => {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
+  const { error } = await signoutUser();
+  if (error) {
+    return;
+  }
+
   return redirect("/");
 };

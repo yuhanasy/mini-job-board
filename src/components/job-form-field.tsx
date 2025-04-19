@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createJobAction, CreateJobActionState } from "@/server/job-actions";
+import { CreateJobActionState } from "@/server/job-actions";
 import { useActionState } from "react";
 import { JobInputType } from "@/entity/job";
 import Link from "next/link";
@@ -36,7 +36,7 @@ type Props = {
 };
 
 const JobFormField = ({ defaultValue, locations, jobTypes, action }: Props) => {
-  const [state, formAction, pending] = useActionState(createJobAction, {});
+  const [state, formAction, pending] = useActionState(action, {});
 
   console.log(state);
   console.log(pending);

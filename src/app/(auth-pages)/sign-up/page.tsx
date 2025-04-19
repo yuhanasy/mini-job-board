@@ -1,10 +1,13 @@
+import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { signUpAction } from "@/server/auth-actions";
 import Link from "next/link";
 import React from "react";
 
-const Signup = () => {
+const Signup = async (props: { searchParams: Promise<Message> }) => {
+  const searchParams = await props.searchParams;
+
   return (
     <form className="flex flex-col min-w-80 mx-auto max-w-xs">
       <h1 className="text-2xl font-medium">Sign up</h1>
@@ -35,6 +38,8 @@ const Signup = () => {
         <SubmitButton formAction={signUpAction} pendingText="Signing up...">
           Sign up
         </SubmitButton>
+
+        <FormMessage message={searchParams} />
       </div>
     </form>
   );

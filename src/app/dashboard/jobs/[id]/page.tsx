@@ -4,6 +4,7 @@ import { fetchJobById } from "@/services/job-services";
 import { relativeTime } from "@/utils/utils";
 import { File, MapIcon, Timer } from "lucide-react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import Markdown from "react-markdown";
 
 export default async function Home({
@@ -14,7 +15,9 @@ export default async function Home({
   const id = (await params).id;
   const job = await fetchJobById({ id });
 
-  if (!job) return;
+  if (!job) {
+    notFound();
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -25,7 +28,7 @@ export default async function Home({
         <DeleteJobDialog
           jobId={id}
           triggerButton={
-            <Button variant="destructive" size="sm">
+            <Button variant="ghost" size="sm">
               Delete
             </Button>
           }
