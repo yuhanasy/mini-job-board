@@ -1,3 +1,4 @@
+import { JobInputType } from "@/entity/job";
 import { JobListItem } from "@/types/job";
 import { createClient } from "@/utils/supabase/server";
 
@@ -89,4 +90,22 @@ export async function fetchJobById({ id }: { id: string }) {
   if (!data) return;
 
   return { ...data, job_types_name: data.job_types.name };
+}
+
+export async function postJob(user_id: string, data: JobInputType) {
+  const supabase = await createClient();
+
+  const sb = await supabase
+    .from("jobs")
+    .insert({
+      user_id,
+      ...data,
+    })
+    .select()
+    .single();
+
+  return {
+    data: sb.data,
+    error: sb.error,
+  };
 }

@@ -36,7 +36,7 @@ export type Database = {
           job_type_id: string
           location: string
           title: string
-          updated_at: string
+          updated_at: string | null
           user_id: string
         }
         Insert: {
@@ -47,7 +47,7 @@ export type Database = {
           job_type_id: string
           location: string
           title: string
-          updated_at: string
+          updated_at?: string | null
           user_id: string
         }
         Update: {
@@ -58,7 +58,7 @@ export type Database = {
           job_type_id?: string
           location?: string
           title?: string
-          updated_at?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: [

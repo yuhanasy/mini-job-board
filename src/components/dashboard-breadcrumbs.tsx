@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "./ui/breadcrumb";
+import { Fragment } from "react";
 
 const DashboardBreadcrumbs = () => {
   const pathname = usePathname();
@@ -20,8 +21,8 @@ const DashboardBreadcrumbs = () => {
         {paths.map((path, index) => {
           const href = "/" + paths.slice(0, index + 1).join("/");
           return (
-            <>
-              <BreadcrumbItem key={path} className="capitalize">
+            <Fragment key={path}>
+              <BreadcrumbItem className="capitalize">
                 {index === paths.length - 1 ? (
                   <BreadcrumbPage>{path}</BreadcrumbPage>
                 ) : (
@@ -30,7 +31,7 @@ const DashboardBreadcrumbs = () => {
               </BreadcrumbItem>
 
               {index < paths.length - 1 && <BreadcrumbSeparator />}
-            </>
+            </Fragment>
           );
         })}
       </BreadcrumbList>

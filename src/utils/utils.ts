@@ -22,6 +22,7 @@ export function relativeTime(date: string | Date) {
     { unit: "day", seconds: 86400 },
     { unit: "hour", seconds: 3600 },
     { unit: "minute", seconds: 60 },
+    { unit: "second", seconds: 1 },
   ];
 
   for (const { unit, seconds } of units) {
